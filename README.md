@@ -6,8 +6,7 @@ This bot detects MEV bots that uses different strategies to extract value from a
 
 ## Supported Chains
 
-- Ethereum
-- BSC
+- All EVM compatible chains
 
 
 ## Supported Strategies

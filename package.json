@@ -1,12 +1,12 @@
 {
   "name": "mev-bot",
   "displayName": "Forta MEV bot detector",
-  "version": "0.0.21",
+  "version": "0.0.22",
   "description": "This bot detects MEV bots that uses different strategies to extract value from a protocol by adding, removing or reordening transactions in a block",
   "longDescription": "Detects Arbitrage, Sandwich and Liquidation. Also usage of Block builders and Flashloans",
-  "repository": "https://github.com/forta-network/forta-bot-sdk/tree/master/starter-project",
-  "licenseUrl": "https://github.com/forta-network/forta-bot-sdk/blob/master/starter-project/LICENSE.md",
-  "promoUrl": "https://forta.org",
+  "repository": "https://github.com/nfmelendez/forta-mev-bot",
+  "licenseUrl": "https://github.com/nfmelendez/forta-mev-bot/blob/main/LICENSE.md",
+  "promoUrl": "https://github.com/nfmelendez/forta-mev-bot",
   "chainIds":  [1, 137, 56, 43114, 42161, 10, 250],
   "scripts": {
     "postinstall": "python3 -m pip install -r requirements_dev.txt",
