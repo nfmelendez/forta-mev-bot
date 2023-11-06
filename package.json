@@ -1,0 +1,52 @@
+{
+  "name": "mev-bot",
+  "displayName": "Forta MEV bot detector",
+  "version": "0.0.21",
+  "description": "This bot detects MEV bots that uses different strategies to extract value from a protocol by adding, removing or reordening transactions in a block",
+  "longDescription": "Detects Arbitrage, Sandwich and Liquidation. Also usage of Block builders and Flashloans",
+  "repository": "https://github.com/forta-network/forta-bot-sdk/tree/master/starter-project",
+  "licenseUrl": "https://github.com/forta-network/forta-bot-sdk/blob/master/starter-project/LICENSE.md",
+  "promoUrl": "https://forta.org",
+  "chainIds":  [1, 137, 56, 43114, 42161, 10, 250],
+  "scripts": {
+    "postinstall": "python3 -m pip install -r requirements_dev.txt",
+    "start": "npm run start:dev",
+    "start:dev": "nodemon --watch src --watch forta.config.json -e py --exec \"forta-agent run\"",
+    "start:prod": "forta-agent run --prod",
+    "tx": "forta-agent run --tx",
+    "block": "forta-agent run --block",
+    "range": "forta-agent run --range",
+    "alert": "forta-agent run --alert",
+    "sequence": "forta-agent run --sequence",
+    "file": "forta-agent run --file",
+    "publish": "forta-agent publish",
+    "info": "forta-agent info",
+    "logs": "forta-agent logs",
+    "push": "forta-agent push",
+    "disable": "forta-agent disable",
+    "enable": "forta-agent enable",
+    "keyfile": "forta-agent keyfile",
+    "stake": "forta-agent stake",
+    "test": "python3 -m pytest",
+    "arbitrage": "forta-agent run --tx 0xf3954572cb83d622120fa4237f6bf5b60886fc7aeb1d8503db34e5dd0a0860da",
+    "arbitrage-block": "forta-agent run --block 18272025,18272026",
+    "mev-inspect-sandwitch-integrtion-test": "forta-agent run --block 12775690,12775691",
+    "mev-inspect-sandwitch-negative-profit": "forta-agent run --block 18391623,18391624",
+    "mev-inspect-arbitrage-integration-test": "forta-agent run --block 12914944,12914945",
+    "mev-inspect-reverting-arbitrage-integration-test": "forta-agent run --block 12483198,12483199",
+    "mev-inspect-liquidation-integration-test": "forta-agent run --block 13376024,13376025",
+    "mev-inspect-arbitrage-flashloan": "forta-agent run --block 18233359,18233360",
+    "mev-inspect-arbitrage-doing-protocol-specific-swap": "forta-agent run --block 18070485,18070486"
+
+
+    
+    
+
+  },
+  "dependencies": {
+    "forta-agent": "^0.1.41"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.8"
+  }
+}
