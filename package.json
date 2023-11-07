@@ -7,7 +7,15 @@
   "repository": "https://github.com/nfmelendez/forta-mev-bot",
   "licenseUrl": "https://github.com/nfmelendez/forta-mev-bot/blob/main/LICENSE.md",
   "promoUrl": "https://github.com/nfmelendez/forta-mev-bot",
-  "chainIds":  [1, 137, 56, 43114, 42161, 10, 250],
+  "chainIds": [
+    1,
+    137,
+    56,
+    43114,
+    42161,
+    10,
+    250
+  ],
   "scripts": {
     "postinstall": "python3 -m pip install -r requirements_dev.txt",
     "start": "npm run start:dev",
@@ -37,11 +45,6 @@
     "mev-inspect-liquidation-integration-test": "forta-agent run --block 13376024,13376025",
     "mev-inspect-arbitrage-flashloan": "forta-agent run --block 18233359,18233360",
     "mev-inspect-arbitrage-doing-protocol-specific-swap": "forta-agent run --block 18070485,18070486"
-
-
-    
-    
-
   },
   "dependencies": {
     "forta-agent": "^0.1.41"
