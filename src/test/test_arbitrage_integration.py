@@ -88,8 +88,10 @@ def test_arbitrage():
 
 def test_flashloan_arbitrage():
     classifier = EventLogClassifier()
-    pkl_file = open(f"{TEST_ARBITRAGES_DIRECTORY}/18233359.pkl", 'rb')
+    pkl_file = open(f"{TEST_ARBITRAGES_DIRECTORY}/16327006.pkl", 'rb')
     block: MevBlock = pickle.load(pkl_file)
+    transactions = [t for t in block.transactions if t.hash == "0xc78e8ed4ecb43a7fd1c5d822009995c9fc426631e78b416773bae9057e6fc72f"]
+    block.transactions = transactions
     classified_event = classifier.classify(block.transactions)
 
     swaps = get_swaps(classified_event)
@@ -97,3 +99,4 @@ def test_flashloan_arbitrage():
     block_builder = get_block_builder(block.block.block.miner, block.block.network)
 
     arbitrages = get_arbitrages(list(swaps), flashloans)
+    print()

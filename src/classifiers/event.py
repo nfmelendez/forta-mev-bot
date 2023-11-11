@@ -51,7 +51,9 @@ class EventLogClassifier:
         return result
 
 
-    def _classify_event_log(self, t: TransactionEvent,  event_log: Log):        
+    def _classify_event_log(self, t: TransactionEvent,  event_log: Log):
+        if event_log.logIndex == 52:
+            print()        
         for spec in self._classifier_specs:
             if spec.valid_contract_addresses is not None:
                 lower_valid_addresses = {

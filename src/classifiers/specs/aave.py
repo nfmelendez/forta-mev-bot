@@ -80,6 +80,7 @@ class AaveV2FlashLoanClassifier(FlashLoanClassifier):
     @staticmethod
     def parse_flashloan(
         flashloan: DecodedEvent,
+        transfers: List[Transfer]
     ) -> Optional[FlashLoan]:
         
         return FlashLoan(

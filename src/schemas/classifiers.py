@@ -65,6 +65,7 @@ class FlashLoanClassifier(Classifier):
     @abstractmethod
     def parse_flashloan(
         flahloan: DecodedEvent,
+        transfers: List[Transfer]
     ) -> Optional[FlashLoan]:
         raise NotImplementedError()
 

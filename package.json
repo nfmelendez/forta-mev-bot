@@ -44,7 +44,9 @@
     "mev-inspect-reverting-arbitrage-integration-test": "forta-agent run --block 12483198,12483199",
     "mev-inspect-liquidation-integration-test": "forta-agent run --block 13376024,13376025",
     "mev-inspect-arbitrage-flashloan": "forta-agent run --block 18233359,18233360",
-    "mev-inspect-arbitrage-doing-protocol-specific-swap": "forta-agent run --block 18070485,18070486"
+    "mev-inspect-arbitrage-doing-protocol-specific-swap": "forta-agent run --block 18070485,18070486",
+    "mev-inspect-arbitrage-with-flashloan-dydx-0xprotocol-uniswap": "forta-agent run --block 16327006,16327007"
+
   },
   "dependencies": {
     "forta-agent": "^0.1.41"

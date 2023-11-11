@@ -62,6 +62,12 @@ def create_swap_from_pool_transfers(
     return swap
 
 
+def filter_transfers(
+    transfers: Sequence[Transfer],
+    to_address: Optional[str] = None,
+    from_address: Optional[str] = None,
+) -> List[Transfer]:
+    return _filter_transfers(transfers, to_address, from_address)
 
 def _filter_transfers(
     transfers: Sequence[Transfer],

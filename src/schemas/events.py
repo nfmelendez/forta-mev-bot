@@ -16,6 +16,10 @@ class Protocol(str, Enum):
     uniswap_v3 = "uniswap_v3"
     sushiswap = "sushiswap"
     aave = "aave"
+    balancer = "balancer"
+    paraswap = "paraswap"
+    zero_ex = "zero_ex"
+    dxdy = "dxdy"
 
 
 
