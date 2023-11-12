@@ -30,11 +30,15 @@ def test_arbitrage():
     flashloans = get_flashloans(classified_event)
     swaps = get_swaps(classified_event)
     for sw in swaps:
-        reverted_transactions_of_12914944.remove(sw.transaction_hash)
+        if sw.transaction_hash in reverted_transactions_of_12914944:
+            reverted_transactions_of_12914944.remove(sw.transaction_hash)
+        else:
+            print(f"{sw.transaction_hash} not in  list")
+
 
     assert len(reverted_transactions_of_12914944) == 9
 
-    assert len(swaps) == 42
+    assert len(swaps) == 43
 
     block_builder = get_block_builder(block.block.block.miner, block.block.network)
 
@@ -86,11 +90,12 @@ def test_arbitrage():
 
 
 
-def test_flashloan_arbitrage():
+def test_flashloan_dxdy_swap_paraswap_zero_ex_arbitrage():
+    swap_transaction = "0xc78e8ed4ecb43a7fd1c5d822009995c9fc426631e78b416773bae9057e6fc72f"
     classifier = EventLogClassifier()
     pkl_file = open(f"{TEST_ARBITRAGES_DIRECTORY}/16327006.pkl", 'rb')
     block: MevBlock = pickle.load(pkl_file)
-    transactions = [t for t in block.transactions if t.hash == "0xc78e8ed4ecb43a7fd1c5d822009995c9fc426631e78b416773bae9057e6fc72f"]
+    transactions = [t for t in block.transactions if t.hash == swap_transaction]
     block.transactions = transactions
     classified_event = classifier.classify(block.transactions)
 
@@ -99,4 +104,18 @@ def test_flashloan_arbitrage():
     block_builder = get_block_builder(block.block.block.miner, block.block.network)
 
     arbitrages = get_arbitrages(list(swaps), flashloans)
-    print()
+
+    arbitrage_1 = [
+        arb
+        for arb in arbitrages
+        if arb.transaction_hash
+        == swap_transaction
+    ][0]
+
+
+    assert len(arbitrage_1.swaps) == 2
+    assert (
+        arbitrage_1.profit_token_address == "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"
+    )
+
+    assert arbitrage_1.profit_amount == 42412792772103669

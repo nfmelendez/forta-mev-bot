@@ -182,6 +182,20 @@ class MEVBot:
 
             assets = [swap.token_in_address for swap in arbitrage.swaps]
             assets += [swap.token_out_address for swap in arbitrage.swaps]
+
+            evidence = {
+                    "start_amount": arbitrage.start_amount,
+                    "end_amount": arbitrage.end_amount,
+                }
+            
+            flashloan = arbitrage.flashloan
+            
+            if (flashloan):
+                evidence["flashloan"] = {
+                    "asset" : flashloan.asset,
+                    "amount": flashloan.amount,
+                    "protocol": flashloan.protocol
+                }
             
             metadata = {
                 "block_builder": block_builder_name,
@@ -189,11 +203,9 @@ class MEVBot:
                 "mev_bot_owner_address": mev_bot_owner_address,
                 "profit_token_address": arbitrage.profit_token_address,
                 "profit_amount": arbitrage.profit_amount,
+                "flashloan": flashloan != None, 
                 "assets": ", ".join(list(set(assets))),
-                "evidence":{
-                    "start_amount": arbitrage.start_amount,
-                    "end_amount": arbitrage.end_amount,
-                }
+                "evidence": evidence
             }
 
             key = f"{arbitrage.block_number}:{arbitrage.transaction_hash}:{arbitrage.account_address}"

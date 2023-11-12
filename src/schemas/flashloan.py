@@ -21,6 +21,4 @@ class FlashLoan(BaseModel):
     initiator: str
     asset: str
     amount: int
-    premium: int
-    referralCode: int
     error: Optional[str]

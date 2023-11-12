@@ -97,8 +97,6 @@ class AaveV2FlashLoanClassifier(FlashLoanClassifier):
             initiator=flashloan.inputs["initiator"],
             asset=flashloan.inputs["asset"],
             amount=flashloan.inputs["amount"],
-            premium=flashloan.inputs["premium"],
-            referralCode=flashloan.inputs["referralCode"],
             to_address =flashloan.to_address
         )
 

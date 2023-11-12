@@ -57,8 +57,6 @@ class AaveV2FlashLoanClassifier(FlashLoanClassifier):
             initiator=accountOwner,
             asset=t.token_address,
             amount=t.amount,
-            premium=-1,
-            referralCode=-1,
             to_address =flashloan.to_address
         )
 

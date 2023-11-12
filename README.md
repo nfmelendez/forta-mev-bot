@@ -33,10 +33,12 @@ This bot detects MEV bots that uses different strategies to extract value from a
         - `profit_amount`: Profit amount extracted by the attacker
         - `profit_token_address`: Profit asset
         - `assets`: list of assets involved in the sandwich
+        - `flashloan`: true if arbitrage used a flashloan
         - `evidence`
           - `frontrun_transaction`: Attacker transaction in front of the victim
           - `backrun_transaction`: Attacker transaction back of the victim
           - `list_sandwich_transactions`: victims's sandwiched transaction
+          - `flashloan`: if a flashloan exist, describe asset, amount and protocol
 
 
 #### Labels
