@@ -1,11 +1,12 @@
 import requests
 import json
 import random
+import os
 
 from dotenv import load_dotenv
 
 load_dotenv()  # take environment variables from .env.
-
+apy_key = os.getenv("FORTA_GRAPHQL_API_KEY")
 
 ALERT_IDS = ["MEV-ARBITRAGE-BOT-IDENTIFIED", "MEV-SANDWICH-BOT-IDENTIFIED", "MEV-LIQUIDATION-BOT-IDENTIFIED"]
 CHAIN_ID= [
@@ -24,7 +25,7 @@ headers = {"content-type": "application/json", "Authorization": f"Bearer {apy_ke
 # start and end date needs to be in the format: YYYY-MM-DD
 START_DATE = "2023-11-10"
 END_DATE = "2023-11-15"
-ALERT_COUNT_LIMIT = 100
+ALERT_COUNT_LIMIT = 400
 
 query = """
 query exampleQuery($input: AlertsInput) {

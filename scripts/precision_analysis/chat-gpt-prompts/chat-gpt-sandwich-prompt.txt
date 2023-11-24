@@ -1,0 +1,40 @@
+//////////////////////////////////////////////////////////
+Generate URLs for blockchain transaction and address information based on the following JSON data:
+
+
+
+{
+  "assets": "0x21be370d5312f44cb42ce377bc9b8a0cef1a4c83, 0x6437adac543583c4b31bf0323a0870430f5cc2e7",
+  "block_builder": "None",
+  "evidence": {
+    "backrun_transaction": "0x0770982f2f242c2b3b32751e32dc9b9e54f53e96301f4e37fac4f2268aee2c40",
+    "frontrun_transaction": "0x164b74dc5caa246e0c8d3a684bc5111efc8ef0c1758320d0d7d840bfba5e63fa",
+    "list_sandwich_transactions": "0x7a8d1060850d2d1c33e5848b6cfa18040f9f2407db8859fc61ecadda65742805"
+  },
+  "profit_amount": "107503705600334910",
+  "profit_token_address": "0x21be370d5312f44cb42ce377bc9b8a0cef1a4c83",
+  "sandwicher_address": "0x806c6a0b69b4dc88a5d34fedcd216f0603b431c7",
+  "sandwicher_owner_address": "0x43b716e364f5a5f4ae9ee0859b2bb3e9a0fe53e2"
+}
+
+
+The sandwicher_address is a MEV bot doing sandwich attacks, owned by the sandwicher_owner_address. Create URLs for the following:
+
+Each transaction (frontrun, backrun, and list sandwich transactions) on Phalcon Explorer for the Fantom network.
+The MEV bot address and the sandwich owner address on FTMScan.
+The URLs should correctly point to the respective transaction/address on the correct blockchain explorer, using the Fantom network for the transactions and FTMScan for the addresses.
+
+
+////////////////////////////////////////////////////////
+
+Change the urls of the explorer when the chain Change
+
+
+el enlace para evidence.frontrun_transaction, evidence.list_sandwich_transactions, evidence.backrun_transaction tiene que empezar con  https://explorer.phalcon.xyz/tx/ftm/  mientras que los enlaces para  MEV bot address y  sandwich owner address tienen que empezar con   https://ftmscan.com/address/
+
+
+
+el enlace para evidence.frontrun_transaction, evidence.list_sandwich_transactions, evidence.backrun_transaction tiene que empezar con  https://explorer.phalcon.xyz/tx/eth/ mientras que los enlaces para  MEV bot address y  sandwich owner address tienen que empezar con https://etherscan.io/address/
+
+
+
