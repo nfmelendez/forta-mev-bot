@@ -119,3 +119,36 @@ def test_flashloan_dxdy_swap_paraswap_zero_ex_arbitrage():
     )
 
     assert arbitrage_1.profit_amount == 42412792772103669
+
+
+
+
+def test_firebird_aggregator_negative_profit_arbitrage():
+    target_transaction = "0xb8b6ef2bab7788a46a83d363b74ac0fd46e70285c56737f81b5712172a22c0b4"
+    classifier = EventLogClassifier()
+    pkl_file = open(f"{TEST_ARBITRAGES_DIRECTORY}/150749752-arbitrum-aggregator-firefird.pkl", 'rb')
+    block: MevBlock = pickle.load(pkl_file)
+    transactions = [t for t in block.transactions if t.hash == target_transaction]
+    block.transactions = transactions
+    classified_event = classifier.classify(block.transactions)
+
+    swaps = get_swaps(classified_event)
+    flashloans = get_flashloans(classified_event)
+    block_builder = get_block_builder(block.block.block.miner, block.block.network)
+
+    arbitrages = get_arbitrages(list(swaps), flashloans)
+
+    arbitrage_1 = [
+        arb
+        for arb in arbitrages
+        if arb.transaction_hash
+        == target_transaction
+    ][0]
+
+
+    assert len(arbitrage_1.swaps) == 2
+    assert (
+        arbitrage_1.profit_token_address == "0x82af49447d8a07e3bd95bd0d56f35241523fbab1"
+    )
+
+    assert arbitrage_1.profit_amount == -66120428811182

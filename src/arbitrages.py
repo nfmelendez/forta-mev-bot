@@ -172,6 +172,9 @@ def _get_head_tail_swaps(swaps: List[Swap]) -> List[Tuple[Swap, List[Swap]]]:
 
     for index, head_swap_candidate in enumerate(swaps):
         tails_for_head: List[Swap] = []
+        #If swaps is [0, 1, 2, 3, 4] and index is 2, then swaps[:index] would be [0, 1] and swaps[index + 1 :] would be [3, 4].
+        # The whole expression swaps[:index] + swaps[index + 1 :] would then result in [0, 1, 3, 4],
+        #  effectively removing the element at index 2 (which is the value 2).
         remaining_swaps = swaps[:index] + swaps[index + 1 :]
 
         for tail_swap_candidate in remaining_swaps:
