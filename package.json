@@ -1,7 +1,7 @@
 {
   "name": "mev-bot",
   "displayName": "Forta MEV bot detector",
-  "version": "0.0.23",
+  "version": "0.0.25",
   "description": "This bot detects MEV bots that uses different strategies to extract value from a protocol by adding, removing or reordening transactions in a block",
   "longDescription": "Detects Arbitrage, Sandwich and Liquidation. Also usage of Block builders and Flashloans",
   "repository": "https://github.com/nfmelendez/forta-mev-bot",
@@ -46,7 +46,8 @@
     "mev-inspect-arbitrage-flashloan": "forta-agent run --block 18233359,18233360",
     "mev-inspect-arbitrage-doing-protocol-specific-swap": "forta-agent run --block 18070485,18070486",
     "mev-inspect-arbitrage-with-flashloan-dydx-0xprotocol-uniswap": "forta-agent run --block 16327006,16327007",
-    "arbitrage-arbitrum": "forta-agent run --block 150749752,150749753"
+    "arbitrage-arbitrum": "forta-agent run --block 150749752,150749753",
+    "router-doing-sandwith": "forta-agent run --block 18791504,18791505"
 
     
   },

@@ -6,7 +6,6 @@ from typing import List
 from flatten_json import flatten
 import time
 
-DUMP_BLOCK = False
 EXPIRATION_WINDOW_SECONDS = 24*60*60 # a day
 
 root = logging.getLogger()
@@ -34,6 +33,7 @@ try:
     from src.flashloans import get_flashloans
     from src.block_builder import get_block_builder
     from src.schemas.block_builder import BlockBuilder
+    from src.config.constants import DUMP_BLOCK
 except ModuleNotFoundError:
     from schemas.mev_block import MevBlock
     from classifiers.event import EventLogClassifier
@@ -48,6 +48,7 @@ except ModuleNotFoundError:
     from flashloans import get_flashloans
     from block_builder import get_block_builder
     from schemas.block_builder import BlockBuilder
+    from config.constants import DUMP_BLOCK
 
 class MEVBot:
 
@@ -364,7 +365,7 @@ def handle_block(block_event: BlockEvent):
     classified_events = mev_bot.classifier.classify(mev_bot.last_block.transactions)
     swaps = get_swaps(classified_events)
     block_builder = get_block_builder(mev_bot.last_block.block.block.miner, mev_bot.last_block.block.network)
-    sandwiches = get_sandwiches(list(swaps))
+    sandwiches = get_sandwiches(mev_bot.last_block.block.network, list(swaps))
     findings = mev_bot.create_sandwich_finding(sandwiches, block_builder)
     mev_bot.last_block = MevBlock(block=block_event)
     mev_bot.last_block.number = block_event.block_number

@@ -3,11 +3,13 @@ from typing import List, Optional
 try:
     from src.schemas.sandwiches import Sandwich
     from src.schemas.swaps import Swap
+    from src.config.routers import ROUTERS
 except ModuleNotFoundError:
     from schemas.sandwiches import Sandwich
     from schemas.swaps import Swap
+    from config.routers import ROUTERS
 
-def get_sandwiches(swaps: List[Swap]) -> List[Sandwich]:
+def get_sandwiches(chain_id, swaps: List[Swap]) -> List[Sandwich]:
     ordered_swaps = list(
         sorted(
             swaps,
@@ -19,7 +21,7 @@ def get_sandwiches(swaps: List[Swap]) -> List[Sandwich]:
 
     for index, swap in enumerate(ordered_swaps):
         rest_swaps = ordered_swaps[index + 1 :]
-        sandwich = _get_sandwich(swap, rest_swaps)
+        sandwich = _get_sandwich(chain_id, swap, rest_swaps)
 
         if sandwich is not None:
             sandwiches.append(sandwich)
@@ -28,10 +30,15 @@ def get_sandwiches(swaps: List[Swap]) -> List[Sandwich]:
 
 
 def _get_sandwich(
+    chain_id,
     front_swap: Swap,
     rest_swaps: List[Swap]
 ) -> Optional[Sandwich]:
     sandwicher_address = front_swap.to_address
+
+    if chain_id in ROUTERS:
+        if sandwicher_address in ROUTERS[chain_id]:
+            return None
 
     sandwiched_swaps = []
 
