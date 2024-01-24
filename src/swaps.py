@@ -48,6 +48,10 @@ def _get_swaps_for_transaction(events: List[ClassifiedEvent]) -> List[Swap]:
             if transfer is not None:
                 transfers.append(transfer)
 
+    for event in ordered_events:
+        if not isinstance(event, DecodedEvent):
+            continue
+
         elif event.classification == Classification.swap:
             swap = _parse_swap(
                 event,

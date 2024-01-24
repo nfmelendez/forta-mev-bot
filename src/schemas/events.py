@@ -20,6 +20,7 @@ class Protocol(str, Enum):
     paraswap = "paraswap"
     zero_ex = "zero_ex"
     dxdy = "dxdy"
+    oneinch = "one_inch"
 
 
 
