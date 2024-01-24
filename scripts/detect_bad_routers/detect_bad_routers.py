@@ -8,7 +8,7 @@ from dotenv import load_dotenv
 load_dotenv()  # take environment variables from .env.
 apy_key = os.getenv("FORTA_GRAPHQL_API_KEY")
 
-ALERT_IDS = ["MEV-SANDWICH-BOT-IDENTIFIED"]
+ALERT_IDS = ["MEV-ARBITRAGE-BOT-IDENTIFIED"]
 CHAIN_ID= [
     1,
     137,
@@ -85,6 +85,7 @@ query exampleQuery($input: AlertsInput) {
 # """
 for alert_id in ALERT_IDS:
   for ci in CHAIN_ID:
+    print (f"===={ci}====")
     query_variables = {
       "input": {
         "alertId": alert_id,
@@ -111,11 +112,10 @@ for alert_id in ALERT_IDS:
         alerts = data['alerts']
         for a in alerts:
           c += 1
-          sandwitcher = a['metadata']['sandwicherAddress']
-          if sandwitcher in address_counter:
-             address_counter[sandwitcher] = address_counter[sandwitcher] + 1
-          else:
-             address_counter[sandwitcher] = 1
+          profitAmount = a['metadata']['profitAmount']
+          if "-" in profitAmount:
+            print(f"{a['chainId']},{a['source']['transactionHash']},{a['metadata']['mevBotAddress']},{a['metadata']['profitTokenAddress']},{a['metadata']['profitAmount']}")
+
 
         # get next page of alerts if it exists
         next_page_exists = data['pageInfo']['hasNextPage']
@@ -123,8 +123,3 @@ for alert_id in ALERT_IDS:
         # This is needed to get the next page of alerts.
         end_cursor = data['pageInfo']['endCursor']
         query_variables['input']['after'] = end_cursor
-    sorted_address_counter_desc = sorted(address_counter.items(), key=lambda x: x[1], reverse=True)
-    print (f"===={ci}====")
-    for i in sorted_address_counter_desc:
-        if i[1] > 10:
-            print(f"{i[0]},{i[1]}")
