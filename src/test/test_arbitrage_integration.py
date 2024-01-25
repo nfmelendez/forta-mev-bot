@@ -183,3 +183,36 @@ def test_1inch_arbitrage():
     )
 
     assert arbitrage_1.profit_amount == 25984264036703461
+
+
+
+
+def test_bancor_v2_v3_arbitrage():
+    target_transaction = "0xff49d86ae9ed4c0a0f6f9ed79fcd05e1da7a3362750a9c34ddf495abb066ef4f"
+    classifier = EventLogClassifier()
+    pkl_file = open(f"{TEST_ARBITRAGES_DIRECTORY}/18765928-bancor-v2-v3-arbitrage.pkl", 'rb')
+    block: MevBlock = pickle.load(pkl_file)
+    transactions = [t for t in block.transactions if t.hash == target_transaction]
+    block.transactions = transactions
+    classified_event = classifier.classify(block.transactions)
+
+    swaps = get_swaps(classified_event)
+    flashloans = get_flashloans(classified_event)
+    block_builder = get_block_builder(block.block.block.miner, block.block.network)
+
+    arbitrages = get_arbitrages(list(swaps), flashloans)
+
+    arbitrage_1 = [
+        arb
+        for arb in arbitrages
+        if arb.transaction_hash
+        == target_transaction
+    ][0]
+
+
+    assert len(arbitrage_1.swaps) == 2
+    assert (
+        arbitrage_1.profit_token_address == "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"
+    )
+
+    assert arbitrage_1.profit_amount == 25984264036703461

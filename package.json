@@ -48,7 +48,9 @@
     "mev-inspect-arbitrage-with-flashloan-dydx-0xprotocol-uniswap": "forta-agent run --block 16327006,16327007",
     "arbitrage-arbitrum": "forta-agent run --block 150749752,150749753",
     "router-doing-sandwith": "forta-agent run --block 18791504,18791505",
-    "1inch": "forta-agent run --block 18684573,18684574"
+    "1inch": "forta-agent run --block 18684573,18684574",
+    "bancorv2v3": "forta-agent run --block 18765928,18765929"
+
 
 
     

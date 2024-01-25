@@ -21,6 +21,7 @@ class Protocol(str, Enum):
     zero_ex = "zero_ex"
     dxdy = "dxdy"
     oneinch = "one_inch"
+    bancor = "bancor"
 
 
 
