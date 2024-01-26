@@ -28,7 +28,7 @@ class TestMEVBot:
         classifier = EventLogClassifier()
         classified_events = classifier.classify(block.transactions)
         swaps = get_swaps(classified_events)
-        assert len(swaps) == 21
+        assert len(swaps) == 22
         block_builder = get_block_builder(block.block.block.miner, block.block.network)
         sandwiches = get_sandwiches(block.block.network, list(swaps))
         assert sandwiches == expected_sandwiches

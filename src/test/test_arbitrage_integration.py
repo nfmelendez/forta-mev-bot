@@ -38,7 +38,7 @@ def test_arbitrage():
 
     assert len(reverted_transactions_of_12914944) == 9
 
-    assert len(swaps) == 43
+    assert len(swaps) == 50
 
     block_builder = get_block_builder(block.block.block.miner, block.block.network)
 
@@ -197,6 +197,8 @@ def test_bancor_v2_v3_arbitrage():
     classified_event = classifier.classify(block.transactions)
 
     swaps = get_swaps(classified_event)
+    for s in swaps:
+        print(f"{s.token_in_address} --> {s.token_out_address}")
     flashloans = get_flashloans(classified_event)
     block_builder = get_block_builder(block.block.block.miner, block.block.network)
 
@@ -210,9 +212,9 @@ def test_bancor_v2_v3_arbitrage():
     ][0]
 
 
-    assert len(arbitrage_1.swaps) == 2
+    assert len(arbitrage_1.swaps) == 4
     assert (
         arbitrage_1.profit_token_address == "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"
     )
 
-    assert arbitrage_1.profit_amount == 25984264036703461
+    assert arbitrage_1.profit_amount == 44529363863340278
