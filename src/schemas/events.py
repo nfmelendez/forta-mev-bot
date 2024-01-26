@@ -23,6 +23,7 @@ class Protocol(str, Enum):
     oneinch = "one_inch"
     bancor = "bancor"
     weth = "weth"
+    curvefi = "curvefi"
 
 
 

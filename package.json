@@ -49,10 +49,8 @@
     "arbitrage-arbitrum": "forta-agent run --block 150749752,150749753",
     "router-doing-sandwith": "forta-agent run --block 18791504,18791505",
     "1inch": "forta-agent run --block 18684573,18684574",
-    "bancorv2v3": "forta-agent run --block 18765928,18765929"
-
-
-
+    "bancorv2v3": "forta-agent run --block 18765928,18765929",
+    "curvefi": "forta-agent run --block 18978930,18978931"
     
   },
   "dependencies": {
