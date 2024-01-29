@@ -24,6 +24,7 @@ class Protocol(str, Enum):
     bancor = "bancor"
     weth = "weth"
     curvefi = "curvefi"
+    makerdao = "makerdao"
 
 
 

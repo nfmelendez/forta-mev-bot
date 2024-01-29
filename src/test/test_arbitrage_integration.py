@@ -255,4 +255,3 @@ def test_curvefi_arbitrage():
 
     assert arbitrage_1.profit_amount == 348730269869598858068
 
-

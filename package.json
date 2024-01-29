@@ -50,7 +50,10 @@
     "router-doing-sandwith": "forta-agent run --block 18791504,18791505",
     "1inch": "forta-agent run --block 18684573,18684574",
     "bancorv2v3": "forta-agent run --block 18765928,18765929",
-    "curvefi": "forta-agent run --block 18978930,18978931"
+    "curvefi": "forta-agent run --block 18978930,18978931",
+    "maker-flashloan": "forta-agent run --block 19111847,19111848",
+    "balancer-flashloan": "forta-agent run --block 18413144,18413145"
+
     
   },
   "dependencies": {
