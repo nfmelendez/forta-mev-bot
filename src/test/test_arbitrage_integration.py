@@ -229,7 +229,7 @@ def test_curvefi_arbitrage():
     pkl_file = open(f"{TEST_ARBITRAGES_DIRECTORY}/18978930-curvefi-arbitrage.pkl", 'rb')
     block: MevBlock = pickle.load(pkl_file)
     transactions = [t for t in block.transactions if t.hash == target_transaction]
-    #block.transactions = transactions
+    block.transactions = transactions
     classified_event = classifier.classify(block.transactions)
 
     swaps = get_swaps(classified_event)
@@ -254,3 +254,5 @@ def test_curvefi_arbitrage():
     )
 
     assert arbitrage_1.profit_amount == 348730269869598858068
+
+
