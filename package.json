@@ -52,7 +52,8 @@
     "bancorv2v3": "forta-agent run --block 18765928,18765929",
     "curvefi": "forta-agent run --block 18978930,18978931",
     "maker-flashloan": "forta-agent run --block 19111847,19111848",
-    "balancer-flashloan": "forta-agent run --block 18413144,18413145"
+    "balancer-flashloan": "forta-agent run --block 18413144,18413145",
+    "dodo-flahloan": "forta-agent run --block 12000102,12000103"
 
     
   },
