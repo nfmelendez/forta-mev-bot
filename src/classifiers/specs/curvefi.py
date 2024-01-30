@@ -31,6 +31,9 @@ class EventCurvefiSwapClassifier(SwapClassifier):
             if t.to_address == buyer and t.amount == event.inputs.get("tokens_bought"):
                 out_transfer = t
 
+        if in_transfer == None or out_transfer == None:
+            return None
+
         swap = Swap(
             abi_name=event.abi_name,
             transaction_hash=event.transaction_hash,

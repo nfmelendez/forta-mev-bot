@@ -255,3 +255,24 @@ def test_curvefi_arbitrage():
 
     assert arbitrage_1.profit_amount == 348730269869598858068
 
+
+
+def test_curvefi_swap_with_eth():
+    target_transaction = "0xa2bebca4a722f41509f152e7197aee5000f434475141217574c2d6f910266b09"
+    classifier = EventLogClassifier()
+    pkl_file = open(f"{TEST_ARBITRAGES_DIRECTORY}/19114225-curvefi-swap-bug.pkl", 'rb')
+    block: MevBlock = pickle.load(pkl_file)
+    transactions = [t for t in block.transactions if t.hash == target_transaction]
+    block.transactions = transactions
+    classified_event = classifier.classify(block.transactions)
+
+    swaps = get_swaps(classified_event)
+    for s in swaps:
+        print(f"[{s.protocol}]{s.token_in_address} --> {s.token_out_address}")
+    flashloans = get_flashloans(classified_event)
+    block_builder = get_block_builder(block.block.block.miner, block.block.network)
+
+    arbitrages = get_arbitrages(list(swaps), flashloans)
+
+    assert len(swaps) == 0
+    assert len(arbitrages) == 0

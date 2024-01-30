@@ -8,6 +8,10 @@ This bot detects MEV bots that uses different strategies to extract value from a
 
 - All EVM compatible chains
 
+## Checkout the MEV alerts
+
+[MEV bot Forta Explorer](https://app.forta.network/bot/0x5bb675492f3accba1d35e7f59f584b6fae11df919f13223f3056a69dc5686b4b)
+
 
 ## Supported Strategies
 
