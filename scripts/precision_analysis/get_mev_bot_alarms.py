@@ -8,7 +8,10 @@ from dotenv import load_dotenv
 load_dotenv()  # take environment variables from .env.
 apy_key = os.getenv("FORTA_GRAPHQL_API_KEY")
 
-ALERT_IDS = ["MEV-ARBITRAGE-BOT-IDENTIFIED", "MEV-SANDWICH-BOT-IDENTIFIED", "MEV-LIQUIDATION-BOT-IDENTIFIED"]
+#ALERT_IDS = ["MEV-ARBITRAGE-BOT-IDENTIFIED", "MEV-SANDWICH-BOT-IDENTIFIED", "MEV-LIQUIDATION-BOT-IDENTIFIED"]
+#ALERT_IDS = [ "MEV-SANDWICH-BOT-IDENTIFIED", "MEV-LIQUIDATION-BOT-IDENTIFIED"]
+ALERT_IDS = ["MEV-LIQUIDATION-BOT-IDENTIFIED"]
+
 CHAIN_ID= [
     1,
     137,
@@ -23,9 +26,10 @@ forta_api = "https://api.forta.network/graphql"
 headers = {"content-type": "application/json", "Authorization": f"Bearer {apy_key}"}
 
 # start and end date needs to be in the format: YYYY-MM-DD
-START_DATE = "2023-11-10"
-END_DATE = "2023-11-15"
+START_DATE = "2024-02-01"
+END_DATE = "2024-02-05"
 ALERT_COUNT_LIMIT = 400
+N_SAMPLE = 4
 
 query = """
 query exampleQuery($input: AlertsInput) {
@@ -120,8 +124,10 @@ for alert_id in ALERT_IDS:
         end_cursor = data['pageInfo']['endCursor']
         query_variables['input']['after'] = end_cursor
     all_alerts += per_chain_alerts
-    sample += random.sample(per_chain_alerts, 4)
-
+    try:
+      sample += random.sample(per_chain_alerts, N_SAMPLE)
+    except:
+       print(f"Can't do a sample for {ci} {alert_id}")
   with open(f"{alert_id}_candidates.txt", 'w') as archivo:
       json.dump(all_alerts, archivo)
 
