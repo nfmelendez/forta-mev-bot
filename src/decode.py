@@ -103,7 +103,7 @@ class ABIDecoder:
         names = [input.name for input in inputs]
         types = [
             input.type
-            if input.type != "tuple"
+            if not input.type.startswith("tuple")
             else eth_utils.abi.collapse_if_tuple(input.dict())
             for input in inputs
         ]

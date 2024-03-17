@@ -1,2 +1,2 @@
-DUMP_BLOCK = False
+DUMP_BLOCK = True
 
