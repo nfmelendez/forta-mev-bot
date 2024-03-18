@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional
 
 from pydantic import BaseModel
 
@@ -11,3 +11,4 @@ class Transfer(BaseModel):
     amount: int
     token_address: str
     log_index: int
+    tokenId: Optional[int] = -1

@@ -13,10 +13,10 @@ except ModuleNotFoundError:
     from schemas.events import Protocol, DecodedEvent
     from schemas.transfers import Transfer
 
-SEAPORT15_ABI_NAME = "seaport15"
+SUDOSWAP_ABI_NAME = "sudoswap"
 
 
-class OpenSeaSwapClassifier(SwapClassifier):
+class SudoswapSwapClassifier(SwapClassifier):
     @staticmethod
     def parse_swap(
         event: DecodedEvent,
@@ -46,16 +46,16 @@ class OpenSeaSwapClassifier(SwapClassifier):
 
 
 
-SEAPORT15_SPEC = ClassifierSpec(
-    abi_name=SEAPORT15_ABI_NAME,
-    protocol=Protocol.opensea,
+SUDOSWAP_SPEC = ClassifierSpec(
+    abi_name=SUDOSWAP_ABI_NAME,
+    protocol=Protocol.sudoswap,
     classifiers={
-        "OrderFulfilled(bytes32,address,address,address,(uint8,address,uint256,uint256)[],(uint8,address,uint256,uint256,address)[])": OpenSeaSwapClassifier,
+        "SwapNFTInPair(uint256,uint256[])": SudoswapSwapClassifier,
     },
 )
 
-OPENSEA_CLASSIFIER_SPECS: List = [
-    SEAPORT15_SPEC
+SUDOSWAP_CLASSIFIER_SPECS: List = [
+    SUDOSWAP_SPEC
 ]
 
 

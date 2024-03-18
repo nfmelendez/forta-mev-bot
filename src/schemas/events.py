@@ -27,6 +27,7 @@ class Protocol(str, Enum):
     makerdao = "makerdao"
     dodo = "dodo"
     opensea = "opensea"
+    sudoswap = "sudoswap"
 
 
 
