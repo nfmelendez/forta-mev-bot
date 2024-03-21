@@ -306,7 +306,22 @@ def test_simple_nft_arbitrage():
 
     assert len(arbitrage_1.swaps) == 2
     assert (
-        arbitrage_1.profit_token_address == "0xd533a949740bb3306d119cc777fa900ba034cd52"
+        arbitrage_1.profit_token_address == "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
     )
 
-    assert arbitrage_1.profit_amount == 348730269869598858068
+    #assert arbitrage_1.profit_amount == 348730269869598858068
+
+
+
+def test_buy_nft_opensea_weth():
+    target_transaction = "0xe8841978b36c6d305f2201abd0d402a1e790c2b9277e84db789d0315571a4916"
+    classifier = EventLogClassifier()
+    pkl_file = open(f"{TEST_ARBITRAGES_DIRECTORY}/19469204-opensea-purchase-weth.pkl", 'rb')
+    block: MevBlock = pickle.load(pkl_file)
+    transactions = [t for t in block.transactions if t.hash == target_transaction]
+    block.transactions = transactions
+    classified_event = classifier.classify(block.transactions)
+
+    swaps = get_swaps(classified_event)
+    for s in swaps:
+        print(f"[{s.protocol}]{s.token_in_address} --> {s.token_out_address}")

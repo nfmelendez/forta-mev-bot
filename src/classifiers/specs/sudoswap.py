@@ -23,6 +23,10 @@ class SudoswapSwapClassifier(SwapClassifier):
         transfers: List[Transfer],
     ) -> Optional[Swap]:
 
+        to_exchange_transfer:Transfer = None
+        for t in transfers:
+            if t.to_address == event.emitter_address:
+                to_exchange_transfer = t
 
         swap = Swap(
             abi_name=event.abi_name,
@@ -34,10 +38,11 @@ class SudoswapSwapClassifier(SwapClassifier):
             protocol=event.protocol,
             from_address=event.to_address,
             to_address=event.to_address,
-            token_in_address=event.emitter_address,
-            token_in_amount=event.inputs.get("wad"),
+            token_in_address=to_exchange_transfer.token_address,
+            token_in_amount=1,
+            token_in_id=event.inputs.get("ids")[0],
             token_out_address= "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
-            token_out_amount=event.inputs.get("wad"),
+            token_out_amount=event.inputs.get("amountOut"),
             error=event.error,
             owner_address= event.from_address
         )
