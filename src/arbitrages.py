@@ -195,20 +195,33 @@ def _get_head_tail_swaps(swaps: List[Swap]) -> List[Tuple[Swap, List[Swap]]]:
     return valid_head_tails
 
 
-def _swap_outs_match_swap_ins(swap_out, swap_in) -> bool:
-    return (
-        swap_out.token_out_address == swap_in.token_in_address
-        and (
-            swap_out.contract_address == swap_in.from_address
-            or swap_out.to_address == swap_in.contract_address
-            or swap_out.to_address == swap_in.from_address
+def _swap_outs_match_swap_ins(swap_out: Swap, swap_in: Swap) -> bool:
+    # is not a nft swap
+    if (swap_out.token_out_id != -1):
+        return (
+            swap_out.token_out_address == swap_in.token_in_address
+            and (
+                swap_out.contract_address == swap_in.from_address
+                or swap_out.to_address == swap_in.contract_address
+                or swap_out.to_address == swap_in.from_address
+            )
+            and _equal_within_percent(
+                swap_out.token_out_amount,
+                swap_in.token_in_amount,
+                TOKEN_AMOUNT_THRESHOLD_PERCENT,
+            )
         )
-        and _equal_within_percent(
-            swap_out.token_out_amount,
-            swap_in.token_in_amount,
-            TOKEN_AMOUNT_THRESHOLD_PERCENT,
-        )
-    )
+    else:
+         return (
+            swap_out.token_out_address == swap_in.token_in_address
+            and (
+                swap_out.contract_address == swap_in.from_address
+                or swap_out.to_address == swap_in.contract_address
+                or swap_out.to_address == swap_in.from_address
+            )
+            and swap_out.token_out_id == swap_in.token_out_id
+        )       
+
 
 def _equal_within_percent(
         first_value: int, second_value: int, threshold_percent: float

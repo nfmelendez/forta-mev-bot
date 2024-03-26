@@ -66,7 +66,9 @@ class OpenSeaSwapClassifier(SwapClassifier):
             if (token_in_address == "0x0000000000000000000000000000000000000000"):
                 token_in_address = ETH_TOKEN_ADDRESS
             token_in_address= token_in_address
-            token_in_amount= selected_consideration[3]
+            token_in_amount = 0
+            for _ , consideration in enumerate(event.inputs.get("consideration")):
+                token_in_amount += consideration[3]
             token_in_id=-1
 
         elif (selected_consideration[0] == 2 or selected_consideration[0] == 3):
