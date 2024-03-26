@@ -17,6 +17,25 @@
         ],
         "name": "SwapNFTInPair",
         "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "amountIn",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256[]",
+                "name": "ids",
+                "type": "uint256[]"
+            }
+        ],
+        "name": "SwapNFTOutPair",
+        "type": "event"
     }
     
 ]

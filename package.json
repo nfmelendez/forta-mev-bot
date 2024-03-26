@@ -56,8 +56,9 @@
     "dodo-flahloan": "forta-agent run --block 12000102,12000103",
     "curvefi-bug": "forta-agent run --block 19114225,19114226",
     "simple-nft-arbitrage": "forta-agent run --block 19437044,19437045",
-    "buy-nft-opensea-weth": "forta-agent run --block 19469204,19469205"
-
+    "buy-nft-opensea-weth": "forta-agent run --block 19469204,19469205",
+    "buy-nft-sudoswap-eth": "forta-agent run --block 19343006,19343007",
+    "buy-nft-opensea-eth": "forta-agent run --block 17776789,17776790"
   },
   "dependencies": {
     "forta-agent": "^0.1.41"
