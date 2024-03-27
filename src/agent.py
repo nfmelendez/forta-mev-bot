@@ -180,9 +180,19 @@ class MEVBot:
                 continue
             else:
                 CACHE[cacheKey] = now_s + EXPIRATION_WINDOW_SECONDS
+            
+            assets = [
+                # Remove 'token_id' key if its value is -1; otherwise, keep the item unchanged
+                {k: v for k, v in asset.items() if k != 'token_id' or asset['token_id'] != -1}
+                for asset in [
+                    {
+                    'address': swap.token_in_address, 
+                    'token_id' : swap.token_in_id 
+                    } for swap in arbitrage.swaps
+                ]
+            ]
 
-            assets = [swap.token_in_address for swap in arbitrage.swaps]
-            assets += [swap.token_out_address for swap in arbitrage.swaps]
+            asset_types =  list(dict.fromkeys(map(lambda x : "NFT" if 'token_id' in x else "TOKEN", assets)))
 
             evidence = {
                     "start_amount": arbitrage.start_amount,
@@ -205,7 +215,8 @@ class MEVBot:
                 "profit_token_address": arbitrage.profit_token_address,
                 "profit_amount": arbitrage.profit_amount,
                 "flashloan": flashloan != None, 
-                "assets": ", ".join(list(set(assets))),
+                "assets": assets,
+                "asset_types": "-".join(asset_types),
                 "evidence": evidence
             }
 

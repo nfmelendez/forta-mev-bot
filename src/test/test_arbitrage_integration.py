@@ -12,7 +12,7 @@ try:
     from src.block_builder import get_block_builder
     from src.schemas.prices import ETH_TOKEN_ADDRESS
 except ModuleNotFoundError:
-    from schemas.mev_block import MevBlock
+    from schemas.mev_block import MevBlock 
     from classifiers.event import EventLogClassifier
     from swaps import get_swaps
     from arbitrages import get_arbitrages
@@ -226,6 +226,7 @@ def test_bancor_v2_v3_arbitrage():
 
 
 def test_curvefi_arbitrage():
+    mev_bot = MEVBot()
     target_transaction = "0x20f1d056b920fd537b4b10c170398fb5dde3ee1d9e21839de8aee944c4445d4a"
     classifier = EventLogClassifier()
     pkl_file = open(f"{TEST_ARBITRAGES_DIRECTORY}/18978930-curvefi-arbitrage.pkl", 'rb')
@@ -256,6 +257,8 @@ def test_curvefi_arbitrage():
     )
 
     assert arbitrage_1.profit_amount == 348730269869598858068
+    finding = mev_bot.create_arbitrage_finding(arbitrages, block_builder)[0]
+    assert finding.metadata['asset_types'] == 'TOKEN'    
 
 
 
@@ -282,6 +285,7 @@ def test_curvefi_swap_with_eth():
 
 
 def test_simple_nft_arbitrage():
+    mev_bot = MEVBot()
     target_transaction = "0x08fd305cee6b98ab1799878e04413f3e7e9d50b62a07391a0aee0937a2d8c7d9"
     classifier = EventLogClassifier()
     pkl_file = open(f"{TEST_ARBITRAGES_DIRECTORY}/19437044-nft-arbitrage.pkl", 'rb')
@@ -311,8 +315,8 @@ def test_simple_nft_arbitrage():
         arbitrage_1.profit_token_address == ETH_TOKEN_ADDRESS
     )
 
-    #assert arbitrage_1.profit_amount == 348730269869598858068
-
+    finding = mev_bot.create_arbitrage_finding(arbitrages, block_builder)[0]
+    assert finding.metadata['asset_types'] == 'TOKEN-NFT'    
 
 
 def test_buy_nft_opensea_weth():
