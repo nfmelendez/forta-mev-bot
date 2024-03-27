@@ -367,3 +367,29 @@ def test_buy_nft_opensea_eth():
 
     assert swaps[0].token_out_id == 1
 
+
+def test_doble_arbitrage_transaction():
+    mev_bot = MEVBot()
+    target_transaction = "0x22c44edc2461803a9e3cd82bb535b94a5855b2b2a62e6b1dbbd2f68cabde8f89"
+    classifier = EventLogClassifier()
+    pkl_file = open(f"{TEST_ARBITRAGES_DIRECTORY}/19322205-double-arbitrage.pkl", 'rb')
+    block: MevBlock = pickle.load(pkl_file)
+    transactions = [t for t in block.transactions if t.hash == target_transaction]
+    block.transactions = transactions
+    classified_event = classifier.classify(block.transactions)
+
+    swaps = get_swaps(classified_event)
+    for s in swaps:
+        print(f"[{s.protocol}]{s.token_in_address} --> {s.token_out_address}")
+    flashloans = get_flashloans(classified_event)
+    block_builder = get_block_builder(block.block.block.miner, block.block.network)
+
+    arbitrages = get_arbitrages(list(swaps), flashloans)
+
+    assert len(arbitrages) == 2
+
+    findings = mev_bot.create_arbitrage_finding(arbitrages, block_builder)
+    assert len(findings) == 2
+
+    assert findings[0].metadata['asset_types'] == 'TOKEN'   
+    assert findings[1].metadata['asset_types'] == 'TOKEN'   

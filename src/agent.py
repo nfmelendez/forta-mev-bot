@@ -161,8 +161,24 @@ class MEVBot:
         return results
 
     def create_arbitrage_finding(self, arbitrages: List[Arbitrage], block_builder: BlockBuilder) -> List[Finding]:
+
+        if (len(arbitrages) == 0):
+            return []
+        
         results:List[Finding] = []
         alert_id = "MEV-ARBITRAGE-BOT-IDENTIFIED"
+
+        cacheKey = f"{alert_id}:{arbitrages[0].account_address}:{arbitrages[0].swaps[0].owner_address}"
+        expire_time_s = CACHE.get(cacheKey)
+        now_s =  time.time()
+        if expire_time_s != None and expire_time_s > now_s:
+            logging.info(f"Alert is cached {cacheKey}")
+            logging.info("Arbitrage Finding: " + arbitrage.model_dump_json())
+            return []
+        else:
+            CACHE[cacheKey] = now_s + EXPIRATION_WINDOW_SECONDS
+
+
 
         block_builder_name = "None"
         if (block_builder):
@@ -171,15 +187,6 @@ class MEVBot:
         for arbitrage in arbitrages:
             mev_bot_owner_address = arbitrage.swaps[0].owner_address
 
-            cacheKey = f"{alert_id}:{arbitrage.account_address}:{mev_bot_owner_address}"
-            expire_time_s = CACHE.get(cacheKey)
-            now_s =  time.time()
-            if expire_time_s != None and expire_time_s > now_s:
-                logging.info(f"Alert is cached {cacheKey}")
-                logging.info("Arbitrage Finding: " + arbitrage.model_dump_json())
-                continue
-            else:
-                CACHE[cacheKey] = now_s + EXPIRATION_WINDOW_SECONDS
             
             assets = [
                 # Remove 'token_id' key if its value is -1; otherwise, keep the item unchanged
