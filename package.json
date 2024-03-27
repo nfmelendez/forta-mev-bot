@@ -59,7 +59,9 @@
     "buy-nft-opensea-weth": "forta-agent run --block 19469204,19469205",
     "buy-nft-sudoswap-eth": "forta-agent run --block 19343006,19343007",
     "buy-nft-opensea-eth": "forta-agent run --block 17776789,17776790",
-    "double-arbitrage": "forta-agent run --block 19322205,19322206"
+    "double-arbitrage": "forta-agent run --block 19322205,19322206",
+    "sandwich-2-victims": "forta-agent run --block 19270423,19270424"
+
     
   },
   "dependencies": {
