@@ -1,7 +1,7 @@
 {
   "name": "mev-bot",
   "displayName": "Forta MEV bot detector",
-  "version": "0.0.26",
+  "version": "0.0.27",
   "description": "This bot detects MEV bots that uses different strategies to extract value from a protocol by adding, removing or reordening transactions in a block",
   "longDescription": "Detects Arbitrage, Sandwich and Liquidation. Also usage of Block builders and Flashloans",
   "repository": "https://github.com/nfmelendez/forta-mev-bot",
