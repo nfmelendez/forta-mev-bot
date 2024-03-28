@@ -28,6 +28,7 @@ class Protocol(str, Enum):
     dodo = "dodo"
     opensea = "opensea"
     sudoswap = "sudoswap"
+    nftx = "nftx"
 
 
 

@@ -393,3 +393,43 @@ def test_doble_arbitrage_transaction():
 
     assert findings[0].metadata['asset_types'] == 'TOKEN'   
     assert findings[1].metadata['asset_types'] == 'TOKEN'   
+
+
+
+
+
+
+def test_nftx_opensea_nft_arbitrage():
+    mev_bot = MEVBot()
+    mev_bot.reset_cache()
+    target_transaction = "0x2a1d1fb94f2acd0a17db6586cafe3b956d53cd62c784e45f5bdfab28224baaa5"
+    classifier = EventLogClassifier()
+    pkl_file = open(f"{TEST_ARBITRAGES_DIRECTORY}/19441386-nftx-opensea-arb.pkl", 'rb')
+    block: MevBlock = pickle.load(pkl_file)
+    transactions = [t for t in block.transactions if t.hash == target_transaction]
+    block.transactions = transactions
+    classified_event = classifier.classify(block.transactions)
+
+    swaps = get_swaps(classified_event)
+    for s in swaps:
+        print(f"[{s.protocol}]{s.token_in_address} --> {s.token_out_address}")
+    flashloans = get_flashloans(classified_event)
+    block_builder = get_block_builder(block.block.block.miner, block.block.network)
+
+    arbitrages = get_arbitrages(list(swaps), flashloans)
+
+    arbitrage_1 = [
+        arb
+        for arb in arbitrages
+        if arb.transaction_hash
+        == target_transaction
+    ][0]
+
+
+    assert len(arbitrage_1.swaps) == 2
+    assert (
+        arbitrage_1.profit_token_address == ETH_TOKEN_ADDRESS
+    )
+
+    finding = mev_bot.create_arbitrage_finding(arbitrages, block_builder)[0]
+    assert finding.metadata['asset_types'] == 'TOKEN-NFT'    

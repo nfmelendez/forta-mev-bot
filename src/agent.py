@@ -58,6 +58,9 @@ class MEVBot:
     last_block:MevBlock = MevBlock()
     classifier = EventLogClassifier()
 
+    def reset_cache(self):
+        CACHE.clear()
+
     def utility_provide_handle_transaction(self, transaction_event: TransactionEvent):
         output = open(transaction_event.hash + '.pkl', 'wb')
         pickle.dump(transaction_event, output)

@@ -60,8 +60,10 @@
     "buy-nft-sudoswap-eth": "forta-agent run --block 19343006,19343007",
     "buy-nft-opensea-eth": "forta-agent run --block 17776789,17776790",
     "double-arbitrage": "forta-agent run --block 19322205,19322206",
-    "sandwich-2-victims": "forta-agent run --block 19270423,19270424"
+    "sandwich-2-victims": "forta-agent run --block 19270423,19270424",
+    "nftx-opensea-arb": "forta-agent run --block 19441386,19441387"
 
+    
     
   },
   "dependencies": {
