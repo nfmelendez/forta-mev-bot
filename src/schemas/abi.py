@@ -66,11 +66,14 @@ class ABIEventDescription(BaseModel):
     def get_signature(self) -> str:
         joined_input_types = ",".join(
             input.type
-            if input.type != "tuple"
-            else eth_utils.abi.collapse_if_tuple(input.dict())
+            if not input.type.startswith("tuple")
+            else self._collapse_if_tuple(input.dict())
             for input in self.inputs
         )
         return f"{self.name}({joined_input_types})"
+    
+    def _collapse_if_tuple(self, tuple_input):
+        return eth_utils.abi.collapse_if_tuple(tuple_input)
     
 ABIDescription = Union[ABIFunctionDescription, ABIGenericDescription, ABIEventDescription]
 ABI = List[ABIDescription]

@@ -19,8 +19,10 @@ class Swap(BaseModel):
     to_address: str # address that is reciving the assets. sometimes could be the same as from_address
     token_in_address: str
     token_in_amount: int
+    token_in_id: Optional[int] = -1
     token_out_address: str
     token_out_amount: int
+    token_out_id: Optional[int] = -1 
     protocol: Protocol
     error: Optional[str]
     owner_address: Optional[str] = ""

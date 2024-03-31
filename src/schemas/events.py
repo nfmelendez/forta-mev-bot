@@ -26,6 +26,9 @@ class Protocol(str, Enum):
     curvefi = "curvefi"
     makerdao = "makerdao"
     dodo = "dodo"
+    opensea = "opensea"
+    sudoswap = "sudoswap"
+    nftx = "nftx"
 
 
 

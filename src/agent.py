@@ -5,6 +5,9 @@ import sys
 from typing import List
 from flatten_json import flatten
 import time
+from itertools import groupby
+from typing import Dict, List
+
 
 EXPIRATION_WINDOW_SECONDS = 24*60*60 # a day
 
@@ -54,6 +57,9 @@ class MEVBot:
 
     last_block:MevBlock = MevBlock()
     classifier = EventLogClassifier()
+
+    def reset_cache(self):
+        CACHE.clear()
 
     def utility_provide_handle_transaction(self, transaction_event: TransactionEvent):
         output = open(transaction_event.hash + '.pkl', 'wb')
@@ -161,8 +167,23 @@ class MEVBot:
         return results
 
     def create_arbitrage_finding(self, arbitrages: List[Arbitrage], block_builder: BlockBuilder) -> List[Finding]:
+
+        if (len(arbitrages) == 0):
+            return []
+        
         results:List[Finding] = []
         alert_id = "MEV-ARBITRAGE-BOT-IDENTIFIED"
+
+        cacheKey = f"{alert_id}:{arbitrages[0].account_address}:{arbitrages[0].swaps[0].owner_address}"
+        expire_time_s = CACHE.get(cacheKey)
+        now_s =  time.time()
+        if expire_time_s != None and expire_time_s > now_s:
+            logging.info(f"Alert is cached {cacheKey}")
+            return []
+        else:
+            CACHE[cacheKey] = now_s + EXPIRATION_WINDOW_SECONDS
+
+
 
         block_builder_name = "None"
         if (block_builder):
@@ -171,18 +192,19 @@ class MEVBot:
         for arbitrage in arbitrages:
             mev_bot_owner_address = arbitrage.swaps[0].owner_address
 
-            cacheKey = f"{alert_id}:{arbitrage.account_address}:{mev_bot_owner_address}"
-            expire_time_s = CACHE.get(cacheKey)
-            now_s =  time.time()
-            if expire_time_s != None and expire_time_s > now_s:
-                logging.info(f"Alert is cached {cacheKey}")
-                logging.info("Arbitrage Finding: " + arbitrage.model_dump_json())
-                continue
-            else:
-                CACHE[cacheKey] = now_s + EXPIRATION_WINDOW_SECONDS
+            
+            assets = [
+                # Remove 'token_id' key if its value is -1; otherwise, keep the item unchanged
+                {k: v for k, v in asset.items() if k != 'token_id' or asset['token_id'] != -1}
+                for asset in [
+                    {
+                    'address': swap.token_in_address, 
+                    'token_id' : swap.token_in_id 
+                    } for swap in arbitrage.swaps
+                ]
+            ]
 
-            assets = [swap.token_in_address for swap in arbitrage.swaps]
-            assets += [swap.token_out_address for swap in arbitrage.swaps]
+            asset_types =  list(dict.fromkeys(map(lambda x : "NFT" if 'token_id' in x else "TOKEN", assets)))
 
             evidence = {
                     "start_amount": arbitrage.start_amount,
@@ -205,7 +227,8 @@ class MEVBot:
                 "profit_token_address": arbitrage.profit_token_address,
                 "profit_amount": arbitrage.profit_amount,
                 "flashloan": flashloan != None, 
-                "assets": ", ".join(list(set(assets))),
+                "assets": assets,
+                "asset_types": "-".join(asset_types),
                 "evidence": evidence
             }
 
@@ -273,9 +296,23 @@ class MEVBot:
         block_Builder_name = "None"
         if block_builder != None:
             block_Builder_name = block_builder.name
-            
-        for sandwich in sandwiches:
 
+        # for sandwich of more than 1 victim
+        def get_swap_by_front_and_back_transaction_hash(
+            sands: List[Sandwich],
+        ) -> Dict[str, List[Sandwich]]:
+            get_transaction_hash = lambda e: e.frontrun_swap.transaction_hash + e.backrun_swap.transaction_hash
+            return {
+                transaction_hash: list(sands)
+                for transaction_hash, sands in groupby(
+                    sorted(sands, key=get_transaction_hash),
+                    key=get_transaction_hash,
+                )
+            }
+
+        grouped_sandwitches = get_swap_by_front_and_back_transaction_hash(sandwiches)
+        for _, sandwiches in grouped_sandwitches.items():
+            sandwich = sandwiches[0]
             cacheKey = f"{alert_id}:{sandwich.sandwicher_address}:{sandwich.frontrun_swap.owner_address}"
             expire_time_s = CACHE.get(cacheKey)
             now_s =  time.time()
@@ -286,18 +323,26 @@ class MEVBot:
             else:
                 CACHE[cacheKey] = now_s + EXPIRATION_WINDOW_SECONDS
 
-            swaps_transaction_hash = [swap.transaction_hash for swap in sandwich.sandwiched_swaps]
+            swaps_transaction_hash = [swap.transaction_hash for inner_sandwich in sandwiches for swap in inner_sandwich.sandwiched_swaps ]
 
-            assets = [swap.token_in_address for swap in sandwich.sandwiched_swaps]
-            assets += [swap.token_out_address for swap in sandwich.sandwiched_swaps]
+            assets = [swap.token_in_address for inner_sandwich in sandwiches for swap in inner_sandwich.sandwiched_swaps ]
+            assets += [swap.token_out_address for inner_sandwich in sandwiches for swap in inner_sandwich.sandwiched_swaps]
 
+            profits = {}
+            for sand in sandwiches:
+                if sand.profit_token_address in profits:
+                    profits[sand.profit_token_address] += sand.profit_amount
+                else:
+                    profits[sand.profit_token_address] = sand.profit_amount
+            profits_data = []
+            for k,v in profits.items():
+                profits_data += [{ 'profit_token_address': k, 'profit_amount':v }]
 
             metadata = {
                         "block_builder": block_Builder_name,
                         "sandwicher_address": sandwich.sandwicher_address,
                         "sandwicher_owner_address": sandwich.frontrun_swap.owner_address,
-                        "profit_amount": sandwich.profit_amount,
-                        "profit_token_address": sandwich.profit_token_address,
+                        "profits": profits_data,
                         "assets": ", ".join(list(set(assets))),
                         "evidence": {
                             "frontrun_transaction": sandwich.frontrun_swap.transaction_hash,

@@ -1,7 +1,7 @@
 {
   "name": "mev-bot",
   "displayName": "Forta MEV bot detector",
-  "version": "0.0.26",
+  "version": "0.0.27",
   "description": "This bot detects MEV bots that uses different strategies to extract value from a protocol by adding, removing or reordening transactions in a block",
   "longDescription": "Detects Arbitrage, Sandwich and Liquidation. Also usage of Block builders and Flashloans",
   "repository": "https://github.com/nfmelendez/forta-mev-bot",
@@ -54,8 +54,14 @@
     "maker-flashloan": "forta-agent run --block 19111847,19111848",
     "balancer-flashloan": "forta-agent run --block 18413144,18413145",
     "dodo-flahloan": "forta-agent run --block 12000102,12000103",
-    "curvefi-bug": "forta-agent run --block 19114225,19114226"
-
+    "curvefi-bug": "forta-agent run --block 19114225,19114226",
+    "simple-nft-arbitrage": "forta-agent run --block 19437044,19437045",
+    "buy-nft-opensea-weth": "forta-agent run --block 19469204,19469205",
+    "buy-nft-sudoswap-eth": "forta-agent run --block 19343006,19343007",
+    "buy-nft-opensea-eth": "forta-agent run --block 17776789,17776790",
+    "double-arbitrage": "forta-agent run --block 19322205,19322206",
+    "sandwich-2-victims": "forta-agent run --block 19270423,19270424",
+    "nftx-opensea-arb": "forta-agent run --block 19441386,19441387"
 
     
     
@@ -67,3 +73,5 @@
     "nodemon": "^2.0.8"
   }
 }
+
+

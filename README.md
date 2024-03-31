@@ -34,8 +34,9 @@ This bot detects MEV bots that uses different strategies to extract value from a
     - Metadata:
         - `sandwicher_address`: attacker address 
         - `block_builder`: Name of the block builder(ex Flashbots) or None 
-        - `profit_amount`: Profit amount extracted by the attacker
-        - `profit_token_address`: Profit asset
+        -  `profits`: it s a list of
+            - `profit_amount`: Profit amount extracted by the attacker
+            - `profit_token_address`: Profit asset
         - `assets`: list of assets involved in the sandwich
         - `flashloan`: true if arbitrage used a flashloan
         - `evidence`
@@ -84,7 +85,8 @@ This bot detects MEV bots that uses different strategies to extract value from a
         - `block_builder`: Name of the block builder(ex Flashbots) or None 
         - `profit_amount`: Profit amount extracted by the attacker
         - `profit_token_address`: Profit asset
-        - `assets`: list of assets involved in the arbitrage
+        - `assets`: list of assets involved in the arbitrage, can be tokens or NFTs with their token id
+        - `asset_types`: which type of assets are involved in the arbitrage, cab be: TOKEN, NFT or TOKEN-NFT
         - `evidence`
           - `start_amount`: Amount of profit token when started the swap chain
           - `end_amount`: Amount of profit token when finished the swap chain

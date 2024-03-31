@@ -6,12 +6,14 @@ try:
     from src.schemas.swaps import Swap
     from src.schemas.events import Protocol, DecodedEvent
     from src.schemas.transfers import Transfer
+    from src.schemas.prices import ETH_TOKEN_ADDRESS
 except ModuleNotFoundError:
     from classifiers.helpers import create_swap_from_pool_transfers
     from schemas.classifiers import ClassifierSpec, SwapClassifier
     from schemas.swaps import Swap
     from schemas.events import Protocol, DecodedEvent
     from schemas.transfers import Transfer
+    from schemas.prices import ETH_TOKEN_ADDRESS
 
 WETH_ABI_NAME = "weth"
 
@@ -36,7 +38,7 @@ class WethSwapClassifier(SwapClassifier):
             to_address=event.to_address,
             token_in_address=event.emitter_address,
             token_in_amount=event.inputs.get("wad"),
-            token_out_address= "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+            token_out_address= ETH_TOKEN_ADDRESS,
             token_out_amount=event.inputs.get("wad"),
             error=event.error,
             owner_address= event.from_address
